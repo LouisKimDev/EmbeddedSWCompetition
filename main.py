@@ -32,7 +32,7 @@ BYPASS = 50 # 바이패스 거리
 
 BREAK_POINT = 1
 
-# P제어 설정
+# 라인트레이싱 설정
 BLACK = 7 # 검은색 정의
 WHITE = 60 # 흰색 정의
 REFLECTION_VALUE = 30 # 반사광 강도
