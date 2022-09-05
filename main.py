@@ -12,7 +12,7 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 from pyhuskylens import *
 
-ev3 = EV3Brick()
+EV3 = EV3Brick()
 GRAB_MOTOR = Motor(Port.C)
 LEFT_MOTOR = Motor(Port.B)
 RIGHT_MOTOR = Motor(Port.D)
@@ -21,7 +21,7 @@ COLOR_SENSOR_L = ColorSensor(Port.S1)
 COLOR_SENSOR_R = ColorSensor(Port.S2)
 HUSKYLENS = HuskyLens(Port.S3, debug=False)
 ULTRASONIC_SENSOR = UltrasonicSensor(Port.S4) 
-ev3.speaker.beep()
+EV3.speaker.beep()
 
 ###########################################
 
@@ -50,7 +50,7 @@ BP = 1 # break point
 ###########################################
 
 def Beep(): # 비프음 출력
-    ev3.speaker.beep()
+    EV3.speaker.beep()
 
 def Grab(grep):  # 그랩 닫기, 열기
     GRAB_MOTOR.run_until_stalled(grep, then = Stop.COAST, duty_limit=50)
@@ -99,14 +99,14 @@ def DEFINE_ID(): # 물체인식 ID 1:포카리 2:삼다수 3:실패
         ID  = blocks[0].ID
         wait(100)
         if ID == 1:
-            ev3.speaker.beep()
+            Beep()
             print("포카리",ULTRASONIC_SENSOR.distance())
             wait(100)
             BREAK_POINT = 0 
             if BREAK_POINT == 0:
                 break
         elif ID == 2:
-            ev3.speaker.beep()
+            Beep()
             wait(100)
             print("삼다수",ULTRASONIC_SENSOR.distance())
             BREAK_POINT = 0
@@ -139,14 +139,14 @@ while True:  # 물체인식 ID 1:포카리 2:삼다수 3:실패
         ID  = blocks[0].ID
         wait(100)
         if ID == 1:
-            ev3.speaker.beep()
+            Beep()
             print("포카리",ultra.distance())
             wait(100)
             BP = 0 
             if BP == 0:
                 break
         elif ID == 2:
-            ev3.speaker.beep()
+            Beep()
             wait(100)
             print("삼다수")
             BP = 0
@@ -273,14 +273,14 @@ while True:  # 물체인식 ID 1:포카리 2:삼다수 3:실패
         ID  = blocks[0].ID
         wait(100)
         if ID == 1:
-            ev3.speaker.beep()
+            Beep()
             print("포카리",ultra.distance())
             wait(100)
             BP = 0 
             if BP == 0:
                 break
         elif ID == 2:
-            ev3.speaker.beep()
+            Beep()
             wait(100)
             print("삼다수")
             BP = 0
@@ -421,14 +421,14 @@ while True:  # 물체인식 ID 1:포카리 2:삼다수 3:실패
         ID  = blocks[0].ID
         wait(100)
         if ID == 1:
-            ev3.speaker.beep()
+            Beep()
             print("포카리",ultra.distance())
             wait(100)
             BP = 0 
             if BP == 0:
                 break
         elif ID == 2:
-            ev3.speaker.beep()
+            Beep()
             wait(100)
             print("삼다수")
             BP = 0
@@ -599,14 +599,14 @@ while True:  # 물체인식 ID 1:포카리 2:삼다수 3:실패
         ID  = blocks[0].ID
         wait(100)
         if ID == 1:
-            ev3.speaker.beep()
+            Beep()
             print("포카리",ultra.distance())
             wait(100)
             BP = 0 
             if BP == 0:
                 break
         elif ID == 2:
-            ev3.speaker.beep()
+            Beep()
             wait(100)
             print("삼다수")
             BP = 0
@@ -774,14 +774,14 @@ while True:  # 물체인식 ID 1:포카리 2:삼다수 3:실패
         ID  = blocks[0].ID
         wait(100)
         if ID == 1:
-            ev3.speaker.beep()
+            Beep()
             print("포카리",ultra.distance())
             wait(100)
             BP = 0 
             if BP == 0:
                 break
         elif ID == 2:
-            ev3.speaker.beep()
+            Beep()
             wait(100)
             print("삼다수")
             BP = 0
@@ -966,14 +966,14 @@ while True:  # 물체인식 ID 1:포카리 2:삼다수 3:실패
         ID  = blocks[0].ID
         wait(100)
         if ID == 1:
-            ev3.speaker.beep()
+            Beep()
             print("포카리",ultra.distance())
             wait(100)
             BP = 0 
             if BP == 0:
                 break
         elif ID == 2:
-            ev3.speaker.beep()
+            Beep()
             wait(100)
             print("삼다수")
             BP = 0
