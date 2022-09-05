@@ -19,6 +19,7 @@ h1 = HuskyLens(Port.S3, debug=False)
 ultra = UltrasonicSensor(Port.S4) 
 ev3.speaker.beep()
 
+#test
 
 def Grab(grep):  # grab open & close
     grab_motor.run_until_stalled(grep, then = Stop.COAST, duty_limit=50)
