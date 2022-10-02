@@ -92,7 +92,7 @@ def DRIVE_UNTIL_RED(): # 직진, 빨간색 발견시 정지
 
 def DEFINE_ID(): # 물체인식 ID 1:포카리 2:삼다수 3:실패
 
-    while True:
+    while BREAK_POINT:
         blocks = HUSKYLENS.get_blocks()
     if len(blocks) > 0:
         ID  = blocks[0].ID
@@ -102,17 +102,13 @@ def DEFINE_ID(): # 물체인식 ID 1:포카리 2:삼다수 3:실패
             print("포카리",ULTRASONIC_SENSOR.distance())
             wait(100)
             BREAK_POINT = 0 
-            if BREAK_POINT == 0:
-                break
+
         elif ID == 2:
             Beep()
             wait(100)
             print("삼다수",ULTRASONIC_SENSOR.distance())
             BREAK_POINT = 0
-            if BREAK_POINT == 0:
-                break
-        elif BREAK_POINT == 0:
-                break
+
         else:
             print("인식실패",ULTRASONIC_SENSOR.distance())
 
@@ -203,11 +199,9 @@ def CHECK_ID(): # 1번이면 빨간색으로 2번이면 파란색으로
         robot.straight(50)
         Turn(100)
 
-def RETURN(): # 물체인식 후 되돌아 가기 제자리에 갖다 놓기
-
 ## 1번 ###########################################
 
-Grab(GRAB_OPEN)  # grab open
+Grab(-200)  # grab open
 
 Follow_left_line()
 
