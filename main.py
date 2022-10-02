@@ -2,6 +2,7 @@
 
 #VERSION_1.01 : 코드 최적화, 변수 값, 로직은 조정 X
 #AUTHOR : 김도윤
+
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
@@ -56,8 +57,7 @@ def Grab(grep):  # 그랩 닫기, 열기
     GRAB_MOTOR.run_until_stalled(grep, then = Stop.COAST, duty_limit=50)
 
 def Reflection(g, reflect):  # 왼쪽라인 or 오른쪽라인 보정 / 오른쪽 센서일때 -PROPORTIONAL_GAIN 보정 필요
-    deviation = reflect - THRESHOLD
- # 선에서 벗어난 정도
+    deviation = reflect - THRESHOLD # 선에서 벗어난 정도
     turn_rate = g * deviation
     robot.drive(DRIVE_SPEED, turn_rate)
     wait(100)
@@ -91,117 +91,27 @@ def DRIVE_UNTIL_RED(): # 직진, 빨간색 발견시 정지
         wait(100)
 
 def DEFINE_ID(): # 물체인식 ID 1:포카리 2:삼다수 3:실패
-
+    global BREAK_POINT
+    global ID
     while BREAK_POINT:
         blocks = HUSKYLENS.get_blocks()
-    if len(blocks) > 0:
-        ID  = blocks[0].ID
-        wait(100)
-        if ID == 1:
-            Beep()
-            print("포카리",ULTRASONIC_SENSOR.distance())
+        if len(blocks) > 0:
+            ID  = blocks[0].ID
             wait(100)
-            BREAK_POINT = 0 
-
-        elif ID == 2:
-            Beep()
-            wait(100)
-            print("삼다수",ULTRASONIC_SENSOR.distance())
-            BREAK_POINT = 0
-
-        else:
-            print("인식실패",ULTRASONIC_SENSOR.distance())
-
-def CHECK_ID(): # 1번이면 빨간색으로 2번이면 파란색으로
-    if ID == 1:
-        print("ID: 1")
-        while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
-            Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
-        robot.straight(50)
-        robot.stop()
-        Turn(-100)
-
-        while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
-            Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
-        robot.straight(50)
-        robot.stop()
-        Turn(100)
-
-        while COLOR_SENSOR_L.color() != Color.RED:  # 직진, 빨간색 발견시 정지
-            robot.drive(100,0)
-            wait(100)
-
-        wait(500)
-        robot.stop()
-
-        Grab(-200)  # grap open
-
-        robot.straight(-100)
-        Turn(-190)
-
-        wait(500)
-
-        while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
-            Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
-
-        robot.straight(50)
-        Turn(-90)
-
-        while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
-            Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
-
-        robot.straight(50)
-        Turn(100)
-    if ID == 2 :
-        print("ID: 2")
-        while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
-            Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
-        robot.straight(50)
-        robot.stop()
-        Turn(-100)
-
-        while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
-            Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
-        robot.straight(BYPASS) 
-
-        while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
-            Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
-        robot.straight(50)
-        robot.stop()
-        Turn(100)
-
-        while COLOR_SENSOR_L.color()!= Color.BLUE:  # 직진, 파란색 발견시 정지
-            print(COLOR_SENSOR_L.color())
-            robot.drive(100,0)
-            wait(100)
-        robot.straight(100)
-        robot.stop()
-
-        Grab(-200)  # grap open
-
-        robot.straight(-100)
-        Turn(-190)
-
-        while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
-            Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
-
-        robot.straight(50)
-        Turn(-100)
-
-        while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
-            Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
-
-        robot.straight(BYPASS)
-
-        while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
-            Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
-
-        robot.straight(50)
-        Turn(100)
+            if ID == 1:
+                Beep()
+                print("포카리",ULTRASONIC_SENSOR.distance())
+                wait(100)
+                BREAK_POINT = 0 
+            elif ID == 2:
+                Beep()
+                wait(100)
+                print("삼다수",ULTRASONIC_SENSOR.distance())
+                BREAK_POINT = 0
 
 ## 1번 ###########################################
 
-Grab(-200)  # grab open
+Grab(GRAB_OPEN)  # grab open
 
 Follow_left_line()
 
