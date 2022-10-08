@@ -66,13 +66,33 @@ def Reflection(g, reflect):  # 왼쪽라인 or 오른쪽라인 보정 / 오른�
 def Turn(degree): # 돌기
     robot.turn(degree)
 
-def Follow_left_line(): # 왼쪽라인 따라가기
-    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE: 
-        Reflection(PROPORTIONAL_GAIN, COLOR_SENSOR_L.reflection())
+def Follow_left_line(bypass_limit): # 왼쪽라인 따라가기/parameter만큼 검은선 무시하고 직진
+    bypass_counter = 0
+    while bypass_counter != bypass_limit: #바이패스 카운터가 바이패스 리밋과 같으면 멈춤
+        if ((COLOR_SENSOR_R.reflection() > REFLECTION_VALUE) and (ULTRASONIC_SENSOR.distance() > ULTRA_SENSSOR_DISTANCE)) : 
+            #아래가 흰색이고, 초음파가 멀면
+            Reflection(PROPORTIONAL_GAIN, COLOR_SENSOR_L.reflection()) #직진
+        elif ((COLOR_SENSOR_R.reflection() < REFLECTION_VALUE) and (ULTRASONIC_SENSOR.distance() > ULTRA_SENSSOR_DISTANCE)):
+            #아래가 검은색이거나 초음파가 멀면
+            bypass_counter = bypass_counter +1 #바이패스 카운터 1 올리고
+            print("bypass: ",bypass_counter)
+            print("Color : ",COLOR_SENSOR_R.reflection())
+            wait(100)
+            Reflection(PROPORTIONAL_GAIN, COLOR_SENSOR_L.reflection()) #직진
 
-def Follow_right_line(): # 오른쪽라인 따라가기
-    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE: 
-        Reflection(PROPORTIONAL_GAIN, COLOR_SENSOR_L.reflection())
+def Follow_right_line(bypass_limit): # 오른쪽라인 따라가기/parameter만큼 검은선 무시하고 직진
+    bypass_counter = 0
+    while bypass_counter != bypass_limit: #바이패스 카운터가 바이패스 리밋과 같으면 멈춤
+        if ((COLOR_SENSOR_R.reflection() > REFLECTION_VALUE) and (ULTRASONIC_SENSOR.distance() > ULTRA_SENSSOR_DISTANCE)) : 
+            #아래가 흰색이고, 초음파가 멀면
+            Reflection(PROPORTIONAL_GAIN, COLOR_SENSOR_L.reflection()) #직진
+        elif ((COLOR_SENSOR_R.reflection() < REFLECTION_VALUE) and (ULTRASONIC_SENSOR.distance() > ULTRA_SENSSOR_DISTANCE)):
+            #아래가 검은색이거나 초음파가 멀면
+            bypass_counter = bypass_counter +1 #바이패스 카운터 1 올리고
+            print("bypass: ",bypass_counter)
+            print("Color : ",COLOR_SENSOR_R.reflection())
+            wait(100)
+            Reflection(PROPORTIONAL_GAIN, COLOR_SENSOR_L.reflection()) #직진
 
 def ULTRA_Distance(): # 초음파 센서 거리 감지 
     while ULTRASONIC_SENSOR.distance() > ULTRA_SENSSOR_DISTANCE: 
