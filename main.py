@@ -27,6 +27,7 @@ EV3.speaker.beep()
 
 GRAB_OPEN = -200 # 그랩 오픈 시 강도
 GRAB_CLOSE = 200 # 그랩 닫을 시 강도
+GRAB_DUTY_LIMIT = 50
 ULTRA_SENSSOR_DISTANCE = 115 # 초음파 감지 거리
 BYPASS = 50 # 바이패스 거리
 
@@ -38,7 +39,7 @@ WHITE = 60 # 흰색 정의
 GAIN = 0.8
 REFLECTION_VALUE = 30 # 반사광 강도
 THRESHOLD = (BLACK+WHITE) / 2
-DRIVE_SPEED = 100
+DRIVE_SPEED = 100 #직진 속도
 PROPORTIONAL_GAIN = 1.2
 
 
@@ -54,7 +55,7 @@ def Beep(): # 비프음 출력
     EV3.speaker.beep()
 
 def Grab(grep):  # 그랩 닫기, 열기
-    GRAB_MOTOR.run_until_stalled(grep, then = Stop.COAST, duty_limit=50)
+    GRAB_MOTOR.run_until_stalled(grep, then = Stop.COAST, duty_limit=GRAB_DUTY_LIMIT)
 
 def Reflection(g, reflect):  # 왼쪽라인 or 오른쪽라인 보정 / 오른쪽 센서일때 -PROPORTIONAL_GAIN 보정 필요
     deviation = reflect - THRESHOLD # 선에서 벗어난 정도
