@@ -24,7 +24,6 @@ ULTRASONIC_SENSOR = UltrasonicSensor(Port.S4)
 EV3.speaker.beep()
 
 ###########################################
-
 GRAB_OPEN = -200 # 그랩 오픈 시 강도
 GRAB_CLOSE = 200 # 그랩 닫을 시 강도
 GRAB_DUTY_LIMIT = 50
@@ -41,14 +40,6 @@ REFLECTION_VALUE = 30 # 반사광 강도
 THRESHOLD = (BLACK+WHITE) / 2
 DRIVE_SPEED = 100 #직진 속도
 PROPORTIONAL_GAIN = 1.2
-
-
-B = 7  # Black 
-W = 60  # White
-G = 0.8  # gain
-RV=30 # reflection value
-BP = 1 # break point
-
 ###########################################
 
 def Beep(): # 비프음 출력
@@ -96,7 +87,7 @@ def Follow_right_line(bypass_limit): # 오른쪽라인 따라가기/parameter만
 
 def ULTRA_Distance(): # 초음파 센서 거리 감지 
     while ULTRASONIC_SENSOR.distance() > ULTRA_SENSSOR_DISTANCE: 
-        rate = G * (COLOR_SENSOR_L.reflection() - THRESHOLD)
+        rate = GAIN * (COLOR_SENSOR_L.reflection() - THRESHOLD)
     robot.drive(100,rate)
     wait(80)
 
@@ -130,6 +121,8 @@ def DEFINE_ID(): # 물체인식 ID 1:포카리 2:삼다수 3:실패
                 print("삼다수",ULTRASONIC_SENSOR.distance())
                 BREAK_POINT = 0
 
+#맨처음 시작 함수 -> 초록색에서 시작해서 양쪽다 검은색이면 함수 탈출하는 걸로
+
 ## 1번 ###########################################
 
 Grab(GRAB_OPEN)  # grab open
@@ -152,13 +145,13 @@ Turn(190)  # 180도 턴
 
 if ID == 1:  # 포카리
     print("포카리로 감")
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -178,29 +171,29 @@ if ID == 1:  # 포카리
 
     wait(500)
     
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-90)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(100)
 if ID == 2 : # 삼다수
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(BYPASS) 
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -218,18 +211,18 @@ if ID == 2 : # 삼다수
     robot.straight(-100)
     Turn(-190)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-100)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     
     robot.straight(50)
@@ -257,13 +250,13 @@ Follow_right_line()
 
 if ID == 1:  # 포카리
     print("포카리로 감")
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -283,29 +276,29 @@ if ID == 1:  # 포카리
 
     wait(500)
     
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-90)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(100)
 if ID == 2 : # 삼다수
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(BYPASS) 
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -323,18 +316,18 @@ if ID == 2 : # 삼다수
     robot.straight(-100)
     Turn(-190)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-100)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     
     robot.straight(50)
@@ -373,13 +366,13 @@ robot.straight(50)
 
 if ID == 1:  # 포카리
     print("포카리로 감")
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -399,29 +392,29 @@ if ID == 1:  # 포카리
 
     wait(500)
     
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-90)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(100)
 if ID == 2 : # 삼다수
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -439,18 +432,18 @@ if ID == 2 : # 삼다수
     robot.straight(-100)
     Turn(-190)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-100)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     
     robot.straight(50)
@@ -486,13 +479,13 @@ Turn(-100)
 
 if ID == 1:  # 포카리
     print("포카리로 감")
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -512,29 +505,29 @@ if ID == 1:  # 포카리
 
     wait(500)
     
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-90)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(100)
 if ID == 2 : # 삼다수
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -552,18 +545,18 @@ if ID == 2 : # 삼다수
     robot.straight(-100)
     Turn(-190)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-100)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     
     robot.straight(50)
@@ -586,7 +579,7 @@ while ultra.distance() > 60:  # 직진 왼쪽라인 보정, 오른쪽 검은색 
     Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
 
 while ultra.distance() > 60:  # 초음파 센서 거리 감지
-    rate = G * (COLOR_SENSOR_L.reflection() - THRESHOLD)
+    rate = GAIN * (COLOR_SENSOR_L.reflection() - THRESHOLD)
     robot.drive(100,rate)
     wait(80)
 
@@ -611,13 +604,13 @@ robot.straight(50)
 
 if ID == 1:  # 포카리
     print("포카리로 감")
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -637,29 +630,29 @@ if ID == 1:  # 포카리
 
     wait(500)
     
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-90)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(100)
 if ID == 2 : # 삼다수
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -677,18 +670,18 @@ if ID == 2 : # 삼다수
     robot.straight(-100)
     Turn(-190)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-100)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     
     robot.straight(50)
@@ -718,7 +711,7 @@ while ultra.distance() > 60:  # 직진 왼쪽라인 보정, 오른쪽 검은색 
     Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
 
 while ultra.distance() > 60:  # 초음파 센서 거리 감지
-    rate = G * (COLOR_SENSOR_L.reflection() - THRESHOLD)
+    rate = GAIN * (COLOR_SENSOR_L.reflection() - THRESHOLD)
     robot.drive(100,rate)
     wait(80)
 
@@ -750,13 +743,13 @@ Turn(-100)
 
 if ID == 1:  # 포카리
     print("포카리로 감")
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -776,29 +769,29 @@ if ID == 1:  # 포카리
 
     wait(500)
     
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-90)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(100)
 if ID == 2 : # 삼다수
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     robot.straight(50)
     robot.stop()
     Turn(-100)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_R.reflection() > RV:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
+    while COLOR_SENSOR_R.reflection() > REFLECTION_VALUE:  # 직진 왼쪽라인 보정, 오른쪽 검은색 정지 
         Reflection(PROPORTIONAL_GAIN,COLOR_SENSOR_L.reflection())
     robot.straight(50)
     robot.stop()
@@ -816,18 +809,18 @@ if ID == 2 : # 삼다수
     robot.straight(-100)
     Turn(-190)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(50)
     Turn(-100)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
 
     robot.straight(BYPASS)
 
-    while COLOR_SENSOR_L.reflection() > RV:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
+    while COLOR_SENSOR_L.reflection() > REFLECTION_VALUE:  # 직진 오른쪽라인 보정, 왼쪽 검은색 정지
         Reflection(-PROPORTIONAL_GAIN,COLOR_SENSOR_R.reflection())
     
     robot.straight(50)
