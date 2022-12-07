@@ -1,7 +1,7 @@
 #!/usr/bin/env pybricks-micropython
 
 # Version_1.20 / 2022-11-13
-# Author : 은대영
+# Author : 은대영/ 김도윤
 
 # V_1.30 변경사항
 # Back(4) 함수 변경 및 추가
